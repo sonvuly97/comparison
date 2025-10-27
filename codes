@@ -1,0 +1,582 @@
+def binary_search(arr, target):
+
+    left = 0  # Левая граница поиска
+    right = len(arr) - 1  # Правая граница поиска
+
+    while left <= right:
+        # Находим середину массива
+        mid = left + (right - left) // 2 # Избегаем переполнения
+
+        # Проверяем средний элемент
+        if arr[mid] == target:
+            return mid  # Элемент найден, возвращаем индекс
+        # Если искомый элемент меньше среднего
+        elif arr[mid] > target:
+            right = mid - 1  # Перемещаемся влево, искомое в левой половине
+        else: # arr[mid] < target
+            left = mid + 1   # Перемещаемся вправо, искомое в правой половине
+
+    return -1  # Элемент не найден
+
+def print_result(arr, target, index):
+    """Функция для вывода результата поиска."""
+    print(f"Массив: {arr}")
+    print(f"Ищем: {target}")
+    if index != -1:
+        print(f"Элемент найден на позиции: {index}")
+    else:
+        print("Элемент не найден")
+
+# Пример использования
+if __name__ == "__main__":
+    sorted_array = [1, 3, 5, 7, 9, 11, 13, 15, 17, 19]
+    target = 7
+
+    result_index = binary_search(sorted_array, target)
+    print_result(sorted_array, target, result_index) 
+
+import java.util.Arrays;
+
+public class BubbleSort {
+
+    // Метод для сортировки массива методом пузырька
+    public static void bubbleSort(int[] arr) {
+        int n = arr.length;
+        boolean swapped; // Флаг для оптимизации: если не было обменов, массив отсортирован
+
+        // Проходим по всем элементам массива
+        for (int i = 0; i < n - 1; i++) {
+            swapped = false;
+            // Последний элемент на каждой итерации уже на своем месте
+            for (int j = 0; j < n - i - 1; j++) {
+                // Сравниваем соседние элементы
+                if (arr[j] > arr[j + 1]) {
+                    // Меняем местами, если они стоят в неправильном порядке
+                    int temp = arr[j];
+                    arr[j] = arr[j + 1];
+                    arr[j + 1] = temp;
+                    swapped = true; // Устанавливаем флаг, если был обмен
+                }
+            }
+            // Если не было обменов, массив отсортирован, можно выйти
+            if (!swapped) {
+                break;
+            }
+        }
+    }
+
+    public static void main(String[] args) {
+        int[] arr = {64, 34, 25, 12, 22, 11, 90};
+
+        System.out.println("Исходный массив: " + Arrays.toString(arr));
+
+        bubbleSort(arr);
+
+        System.out.println("Отсортированный массив: " + Arrays.toString(arr));
+    }
+} 
+
+#include <iostream>
+#include <vector>
+
+// Функция для поддержания свойства кучи (max-heap)
+void heapify(std::vector<int>& arr, int n, int i) {
+    int largest = i; // Инициализируем наибольший элемент как корень
+    int left = 2 * i + 1;   // левый = 2*i + 1
+    int right = 2 * i + 2;  // правый = 2*i + 2
+
+    // Проверяем, существует ли левый дочерний элемент и больше ли он корня
+    if (left < n && arr[left] > arr[largest])
+        largest = left;
+
+    // Проверяем, существует ли правый дочерний элемент и больше ли он корня
+    if (right < n && arr[right] > arr[largest])
+        largest = right;
+
+    // Если корень не является наибольшим, меняем его и продолжаем heapify
+    if (largest != i) {
+        std::swap(arr[i], arr[largest]);
+        heapify(arr, n, largest); // Применяем heapify к новому поддереву
+    }
+}
+
+// Основная функция пирамидальной сортировки
+void heapSort(std::vector<int>& arr) {
+    int n = arr.size();
+
+    // Построение max-heap из входного массива.
+    // Начинаем с последнего узла, имеющего потомков (n/2 - 1)
+    for (int i = n / 2 - 1; i >= 0; i--) {
+        heapify(arr, n, i);
+    }
+
+    // Один за другим извлекаем элементы из кучи
+    for (int i = n - 1; i > 0; i--) {
+        // Перемещаем текущий корень (максимальный элемент) в конец
+        std::swap(arr[0], arr[i]);
+        // Вызываем heapify для уменьшенной кучи (до i-1)
+        heapify(arr, i, 0);
+    }
+}
+
+// Функция для вывода массива
+void printArray(const std::vector<int>& arr) {
+    for (int num : arr) {
+        std::cout << num << " ";
+    }
+    std::cout << std::endl;
+}
+
+int main() {
+    std::vector<int> arr = {12, 11, 13, 5, 6, 7};
+
+    std::cout << "Исходный массив: ";
+    printArray(arr);
+
+    heapSort(arr);
+
+    std::cout << "Отсортированный массив: ";
+    printArray(arr);
+
+    return 0;
+} 
+import java.util.Arrays;
+
+public class FibonacciSearch {
+
+    // Метод для генерации чисел Фибоначчи до тех пор, пока не найдётся F[m] >= n
+    public static int findFib(int n) {
+        int fib_m2 = 0; // F(m-2)
+        int fib_m1 = 1; // F(m-1)
+        int fib_m = fib_m2 + fib_m1; // F(m)
+
+        // Находим m такое, что F[m] >= n
+        while (fib_m < n) {
+            fib_m2 = fib_m1;
+            fib_m1 = fib_m;
+            fib_m = fib_m2 + fib_m1;
+        }
+        return fib_m; // Возвращаем F[m] >= n
+    }
+
+    // Метод поиска Фибоначчи
+    public static int fibonacciSearch(int[] arr, int x) {
+        int n = arr.length;
+
+        // Находим наименьшее число Фибоначчи, большее или равное n
+        int fib_m2 = 0; // F(m-2)
+        int fib_m1 = 1; // F(m-1)
+        int fib_m = fib_m2 + fib_m1; // F(m)
+
+        while (fib_m < n) {
+            fib_m2 = fib_m1;
+            fib_m1 = fib_m;
+            fib_m = fib_m2 + fib_m1;
+        }
+
+        // Маркер для элементов, которые не входят в массив (смещение)
+        int offset = -1;
+
+        // Поиск
+        while (fib_m > 1) {
+            // Проверяем возможный индекс
+            // i = min(offset + F[m-2], n-1)
+            int i = Math.min(offset + fib_m2, n - 1);
+
+            // Если x больше элемента, переходим к правому подмассиву
+            if (arr[i] < x) {
+                fib_m = fib_m1;
+                fib_m1 = fib_m2;
+                fib_m2 = fib_m - fib_m1;
+                offset = i;
+            }
+            // Если x меньше элемента, переходим к левому подмассиву
+            else if (arr[i] > x) {
+                fib_m = fib_m2;
+                fib_m1 = fib_m1 - fib_m2; // F[m-1] = F[m] - F[m-2]
+                fib_m2 = fib_m - fib_m1; // F[m-2] = F[m] - F[m-1]
+                // offset остается прежним
+            }
+            // Элемент найден
+            else {
+                return i;
+            }
+        }
+
+        // Проверяем последний элемент, если F[m-1] != 0 и элемент существует
+        if (fib_m1 == 1 && offset + 1 < n && arr[offset + 1] == x) {
+            return offset + 1;
+        }
+
+        return -1; // Элемент не найден
+    }
+
+    public static void main(String[] args) {
+        int[] arr = {10, 22, 35, 40, 45, 50, 80, 82, 85, 90, 100};
+        int x = 85; // Искомое значение
+
+        System.out.println("Массив: " + Arrays.toString(arr));
+        System.out.println("Ищем: " + x);
+
+        int result = fibonacciSearch(arr, x);
+
+        if (result != -1) {
+            System.out.println("Элемент найден на позиции: " + result);
+        } else {
+            System.out.println("Элемент не найден");
+        }
+    }
+} 
+def insertion_sort(arr):
+    """
+    Функция сортировки вставками.
+    Сортирует массив на месте.
+    """
+    # Проходим по всем элементам массива, начиная со второго
+    for i in range(1, len(arr)):
+        key = arr[i]  # Текущий элемент, который нужно вставить
+        j = i - 1     # Индекс предыдущего элемента
+
+        # Перемещаем элементы arr[0..i-1], которые больше key,
+        # на одну позицию вперед
+        while j >= 0 and arr[j] > key:
+            arr[j + 1] = arr[j]  # Сдвигаем элемент вправо
+            j -= 1               # Переходим к следующему элементу влево
+
+        # Вставляем key на правильное место
+        arr[j + 1] = key
+
+def print_array(arr):
+    """Функция для вывода массива."""
+    print(*arr)
+
+# Пример использования
+if __name__ == "__main__":
+    # Создаем тестовый массив
+    array = [12, 11, 13, 5, 6]
+
+    print("Исходный массив:")
+    print_array(array)
+
+    # Сортируем массив
+    insertion_sort(array)
+
+    print("Отсортированный массив:")
+    print_array(array) 
+
+  #include <iostream>
+#include <vector>
+
+// Функция интерполирующего поиска
+int interpolationSearch(const std::vector<int>& arr, int x) {
+    int n = arr.size();
+    int lo = 0;        // Левая граница
+    int hi = n - 1;    // Правая граница
+
+    // Условие для продолжения поиска
+    while (lo <= hi && x >= arr[lo] && x <= arr[hi]) {
+        // Если границы равны, проверяем этот элемент
+        if (lo == hi) {
+            if (arr[lo] == x) return lo;
+            return -1; // Элемент не найден
+        }
+
+        // Вычисляем предполагаемую позицию (pos) на основе интерполяции
+        // pos = lo + [ (x - arr[lo]) / (arr[hi] - arr[lo]) ] * (hi - lo)
+        int pos = lo + (((double)(x - arr[lo]) / (arr[hi] - arr[lo])) * (hi - lo));
+
+        // Состояние, если цель найдена
+        if (arr[pos] == x) {
+            return pos;
+        }
+        // Если x больше, x находится в правом подмассиве
+        else if (arr[pos] < x) {
+            lo = pos + 1;
+        }
+        // Если x меньше, x находится в левом подмассиве
+        else {
+            hi = pos - 1;
+        }
+    }
+    return -1; // Элемент не найден
+}
+
+int main() {
+    std::vector<int> arr = {10, 12, 13, 16, 18, 19, 20, 21, 22, 23, 24, 33, 35, 42, 47};
+    int x = 18; // Искомое значение
+
+    std::cout << "Массив: ";
+    for (int num : arr) std::cout << num << " ";
+    std::cout << "\nИщем: " << x << std::endl;
+
+    int result = interpolationSearch(arr, x);
+
+    if (result != -1) {
+        std::cout << "Элемент найден на позиции: " << result << std::endl;
+    } else {
+        std::cout << "Элемент не найден" << std::endl;
+    }
+
+    return 0;
+} 
+
+import java.util.Arrays;
+
+public class LinearSearch {
+
+    // Метод для линейного поиска
+    public static int linearSearch(int[] arr, int target) {
+        // Проходим по всем элементам массива
+        for (int i = 0; i < arr.length; i++) {
+            // Если нашли искомый элемент
+            if (arr[i] == target) {
+                return i; // Возвращаем индекс найденного элемента
+            }
+        }
+        return -1; // Возвращаем -1, если элемент не найден
+    }
+
+    public static void main(String[] args) {
+        int[] array = {3, 5, 2, 7, 9, 1, 4};
+        int target = 7; // Искомое значение
+
+        System.out.println("Массив: " + Arrays.toString(array));
+        System.out.println("Ищем: " + target);
+
+        // Вызываем функцию поиска
+        int result = linearSearch(array, target);
+
+        // Выводим результат
+        if (result != -1) {
+            System.out.println("Элемент найден на позиции: " + result);
+        } else {
+            System.out.println("Элемент не найден");
+        }
+    } 
+#include <iostream>
+#include <vector>
+
+// Функция слияния двух отсортированных подмассивов
+void merge(std::vector<int>& arr, int left, int mid, int right) {
+    int n1 = mid - left + 1; // Размер левого подмассива
+    int n2 = right - mid;    // Размер правого подмассива
+
+    // Создаем временные векторы для левого и правого подмассивов
+    std::vector<int> leftArr(n1);
+    std::vector<int> rightArr(n2);
+
+    // Копируем данные во временные векторы
+    for (int i = 0; i < n1; i++)
+        leftArr[i] = arr[left + i];
+    for (int j = 0; j < n2; j++)
+        rightArr[j] = arr[mid + 1 + j];
+
+    // Сливаем временные векторы обратно в arr[left..right]
+    int i = 0; // Индекс для левого подмассива
+    int j = 0; // Индекс для правого подмассива
+    int k = left; // Индекс для объединенного массива
+
+    while (i < n1 && j < n2) {
+        if (leftArr[i] <= rightArr[j]) {
+            arr[k] = leftArr[i];
+            i++;
+        } else {
+            arr[k] = rightArr[j];
+            j++;
+        }
+        k++;
+    }
+
+    // Копируем оставшиеся элементы левого подмассива (если есть)
+    while (i < n1) {
+        arr[k] = leftArr[i];
+        i++;
+        k++;
+    }
+
+    // Копируем оставшиеся элементы правого подмассива (если есть)
+    while (j < n2) {
+        arr[k] = rightArr[j];
+        j++;
+        k++;
+    }
+}
+
+// Основная функция сортировки слиянием
+void mergeSort(std::vector<int>& arr, int left, int right) {
+    if (left < right) {
+        // Находим середину
+        int mid = left + (right - left) / 2; // Избегаем переполнения
+
+        // Рекурсивно сортируем левую и правую половины
+        mergeSort(arr, left, mid);
+        mergeSort(arr, mid + 1, right);
+
+        // Сливаем отсортированные половины
+        merge(arr, left, mid, right);
+    }
+}
+
+// Функция для вывода массива
+void printArray(const std::vector<int>& arr) {
+    for (int num : arr) {
+        std::cout << num << " ";
+    }
+    std::cout << std::endl;
+}
+
+int main() {
+    std::vector<int> array = {38, 27, 43, 3, 9, 82, 10};
+
+    std::cout << "Исходный массив: ";
+    printArray(array);
+
+    // Вызываем сортировку слиянием
+    mergeSort(array, 0, array.size() - 1);
+
+    std::cout << "Отсортированный массив: ";
+    printArray(array);
+
+    return 0;
+} 
+
+def partition(arr, low, high):
+    """
+    Функция разбиения массива для быстрой сортировки.
+    Выбирает последний элемент как опорный.
+    Возвращает индекс, на котором оказался опорный элемент.
+    """
+    pivot = arr[high]  # Выбираем последний элемент как опорный
+    i = low - 1        # Индекс меньшего элемента (элементы слева от i <= pivot)
+
+    for j in range(low, high):
+        # Если текущий элемент меньше или равен опорному
+        if arr[j] <= pivot:
+            i += 1       # Увеличиваем индекс меньшего элемента
+            arr[i], arr[j] = arr[j], arr[i]  # Меняем местами arr[i] и arr[j]
+
+    # После цикла, элементы от low до i включительно <= pivot
+    # Элементы от i+1 до high-1 > pivot
+    # Меняем местами опорный элемент (pivot) с arr[i+1]
+    arr[i + 1], arr[high] = arr[high], arr[i + 1]
+    return i + 1  # Возвращаем индекс, на котором теперь стоит pivot
+
+def quick_sort(arr, low, high):
+    """
+    Основная функция быстрой сортировки.
+    Сортирует массив arr от индекса low до high (включительно).
+    """
+    if low < high:
+        # pi - это индекс разбиения, arr[pi] находится на своем месте
+        pi = partition(arr, low, high)
+
+        # Отсортировать элементы до и после разбиения
+        quick_sort(arr, low, pi - 1)
+        quick_sort(arr, pi + 1, high)
+
+def print_array(arr):
+    """Функция для вывода массива."""
+    print(*arr)
+
+# Пример использования
+if __name__ == "__main__":
+    # Создаем тестовый массив
+    array = [10, 7, 8, 9, 1, 5]
+
+    print("Исходный массив:")
+    print_array(array)
+
+    # Сортируем массив
+    quick_sort(array, 0, len(array) - 1)
+
+    print("Отсортированный массив:")
+    print_array(array) 
+
+#include <iostream>
+#include <vector>
+
+// Функция сортировки выбором
+void selectionSort(std::vector<int>& arr) {
+    int n = arr.size();
+
+    // Проходим по всем элементам массива
+    for (int i = 0; i < n - 1; i++) {
+        // Предполагаем, что первый элемент в неотсортированной части - минимальный
+        int minIndex = i;
+
+        // Ищем минимальный элемент в оставшейся части массива
+        for (int j = i + 1; j < n; j++) {
+            if (arr[j] < arr[minIndex]) {
+                minIndex = j; // Обновляем индекс минимального элемента
+            }
+        }
+
+        // Меняем найденный минимальный элемент с первым элементом в неотсортированной части
+        if (minIndex != i) {
+            std::swap(arr[i], arr[minIndex]);
+        }
+    }
+}
+
+// Функция для вывода массива
+void printArray(const std::vector<int>& arr) {
+    for (int num : arr) {
+        std::cout << num << " ";
+    }
+    std::cout << std::endl;
+}
+
+int main() {
+    // Создаем тестовый массив
+    std::vector<int> testArray = {64, 25, 12, 22, 11};
+
+    std::cout << "Исходный массив: ";
+    printArray(testArray);
+
+    // Сортируем массив
+    selectionSort(testArray);
+
+    std::cout << "Отсортированный массив: ";
+    printArray(testArray);
+
+    return 0;
+} 
+
+import java.util.Arrays;
+
+public class ShellSort {
+
+    // Метод для сортировки Шелла
+    public static void shellSort(int[] arr) {
+        int n = arr.length;
+
+        // Начинаем с большого промежутка (gap) и уменьшаем его
+        for (int gap = n / 2; gap > 0; gap /= 2) {
+            // Проходим по всем элементам, начиная с индекса 'gap'
+            for (int i = gap; i < n; i++) {
+                // Сохраняем текущий элемент для вставки
+                int temp = arr[i];
+                int j;
+
+                // Сдвигаем элементы, которые больше temp, вправо
+                // на расстояние 'gap', пока не найдем правильное место
+                for (j = i; j >= gap && arr[j - gap] > temp; j -= gap) {
+                    arr[j] = arr[j - gap];
+                }
+
+                // Вставляем temp на правильное место
+                arr[j] = temp;
+            }
+        }
+    }
+
+    public static void main(String[] args) {
+        int[] arr = {12, 34, 54, 2, 3};
+
+        System.out.println("Исходный массив: " + Arrays.toString(arr));
+
+        shellSort(arr);
+
+        System.out.println("Отсортированный массив: " + Arrays.toString(arr));
+    }
+} 
